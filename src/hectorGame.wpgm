@@ -1,0 +1,29 @@
+import wollok.game.*
+import hector.*
+
+program Farmville{
+	//CONFIG del juego
+	game.title("Hector  y sus cultivos ")
+	game.height(10)
+	game.width(10)
+	game.ground("ground.png")
+	game.addVisual(hector)
+	
+	//Teclado
+	keyboard.up().onPressDo{ hector.mover(hector.position().up(1))}
+	keyboard.down().onPressDo {hector.mover(hector.position().down(1))}
+	keyboard.left().onPressDo { hector.mover(hector.position().left(1))}
+	keyboard.right().onPressDo { hector.mover(hector.position().right(1))}
+	keyboard.m().onPressDo { hector.sembrar(maiz)}
+	keyboard.t().onPressDo { hector.sembrar(trigo)}
+	keyboard.o().onPressDo { hector.sembrar(tomaco)}
+	keyboard.c().onPressDo { hector.cosechar(game.colliders(hector))}
+	keyboard.r().onPressDo { hector.regar(game.colliders(hector))}
+	
+	
+	game.start()
+	
+	
+	
+	
+}
