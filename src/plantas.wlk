@@ -3,6 +3,7 @@ import wollok.game.*
 
 class Cultivos{
 	var property position
+	var property esUnaPlanta=true
 	method enCosecha(){
 		hector.guardarPlantaParaVender(self)
 		game.removeVisual(self)
@@ -16,6 +17,7 @@ class Maiz inherits Cultivos{
 	
 	
 	method enRegado(posicion){
+			if(self.image()=="corn_baby.png")
 			game.removeVisual(self)
 			self.image("corn_adult.png")
 			game.addVisual(self)
@@ -69,7 +71,7 @@ class Tomaco inherits Cultivos{
 	var property image= "tomaco_baby.png"
 	
 	method enRegado(posicion){
-		if(posicion.y()!=9){
+		if(self.image()=="tomaco_baby.png"and posicion.y()!=9){
 			game.removeVisual(self)
 			self.image("tomaco.png")
 		game.addVisualIn(self,self.nuevaPosicion())

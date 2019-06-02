@@ -1,5 +1,6 @@
 import wollok.game.*
 import plantas.*
+import mercado.*
 
 object hector{
 	var property plantas=[]
@@ -30,28 +31,37 @@ object hector{
 		return plantas.map({planta=>planta.valorDeVenta()}).sum()
 		}
 		
-		method venderPlantas(){
+		method venderPlantas(mercado){
+			if(self.colisionaConMercado() and Mercado.puedePagar()){
 			ahorros= ahorros + self.precioDeLasPlantasEnTotal()
 			plantas=[]
+			}
+		
+		
 			
 			
 			
 			
 		}
 		
+		method colisionaConMercado(){
+			return game.colliders(self).all({cosa=>not cosa.esUnaPlanta()})
+		}
 		
 		
+		method plantasQueColisionan(){
+			return game.colliders(self).filter({cosa=>cosa.esUnaPlanta()})
+		}
 		
 		
 		
 		
 		method regarSiHayPlantas(){
-			var plantasQueColisionan= game.colliders(self)
-			if(plantasQueColisionan.isEmpty()){
+			if(self.plantasQueColisionan().isEmpty()){
 				game.error ("no hay plantas para regar en este momento")
 			}
 			else{
-				self.regarPlantas(plantasQueColisionan)
+				self.regarPlantas(self.plantasQueColisionan())
 			
 				
 			}
@@ -59,40 +69,23 @@ object hector{
 			
 			
 			method regarPlantas(_plantas){
-				_plantas.forEach({planta=>self.regar(planta)})
+				_plantas.forEach({planta=>planta.enRegado(self.position())})
 				
 			}
 			
 
 		
 		method cosecharSiHayPlantas(){
-			var plantasQueColisionan=game.colliders(self)
-			if(plantasQueColisionan.isEmpty()){
+			if(self.plantasQueColisionan().isEmpty()){
 			game.error("no hay plantas para cosechar en este momento")
 		}
 		else{
-			plantasQueColisionan.forEach({planta=>self.cosechar(planta)})
+			self.plantasQueColisionan().forEach({planta=>self.cosechar(planta)})
 			
 		}
 		
 		}
 		
-		method regar(planta){
-		
-		if(planta.image() == "corn_baby.png"){
-			
-			planta.enRegado(self.position())
-			
-		
-		}else if (planta.image() ==  "tomaco.png"){
-			
-			planta.enRegado(self.position())
-			
-		}else{
-			
-			planta.enRegado(self.position())
-		}
-	}
 		
 		method cosechar(planta){
 		

@@ -8,7 +8,11 @@ program Farmville{
 	game.height(10)
 	game.width(10)
 	game.ground("ground.png")
+	
+	
+	//Visuales
 	game.addVisual(hector)
+	game.addVisualIn(mercado,mercado.position().up(3).left(4))
 	
 	//Teclado
 	keyboard.up().onPressDo{ hector.mover(hector.position().up(1))}
