@@ -1,7 +1,9 @@
 import wollok.game.*
+import plantas.*
+
 object hector{
 	var property plantas=[]
-	var property position= game.at(5,5)
+	var property position= game.at(1,1)
 	var property ahorros = 0
 	
 	method image(){
@@ -10,7 +12,10 @@ object hector{
 		
 	method sembrar(planta){
 		game.addVisualIn(planta,self.position())
+		
 	}
+	
+	
 	
 		
 		method guardarPlantaParaVender(planta){
@@ -19,17 +24,6 @@ object hector{
 		
 		method mover(posicion){
 			self.position(posicion)
-		}
-		
-		method regar(_plantas){
-			self.verSiHayPlantasParaRegar(_plantas)
-			_plantas.forEach({planta=>planta.enRegado(self.position())})
-		}
-		
-		method cosechar(_plantas){
-			self.verSiHayPlantasParaCosechar(_plantas)
-			_plantas.forEach({planta=>planta.enCosecha()})
-			
 		}
 		
 		method precioDeLasPlantasEnTotal(){
@@ -51,19 +45,79 @@ object hector{
 		
 		
 		
-		method verSiHayPlantasParaRegar(_plantas){
-			if(_plantas== null){
+		method regarSiHayPlantas(){
+			var plantasQueColisionan= game.colliders(self)
+			if(plantasQueColisionan.isEmpty()){
 				game.error ("no hay plantas para regar en este momento")
 			}
+			else{
+				self.regarPlantas(plantasQueColisionan)
+			
+				
+			}
+			}
+			
+			
+			method regarPlantas(_plantas){
+				_plantas.forEach({planta=>self.regar(planta)})
+				
+			}
+			
+
+		
+		method cosecharSiHayPlantas(){
+			var plantasQueColisionan=game.colliders(self)
+			if(plantasQueColisionan.isEmpty()){
+			game.error("no hay plantas para cosechar en este momento")
+		}
+		else{
+			plantasQueColisionan.forEach({planta=>self.cosechar(planta)})
 			
 		}
 		
-		method verSiHayPlantasParaCosechar(_plantas){
-			if(_plantas==null)
-			game.error("no hay plantas para cosechar en este momento")
 		}
-	
 		
+		method regar(semilla){
+		
+		if(semilla.image() == "corn_baby.png"){
+			
+			semilla.enRegado(self.position())
+			
+		
+		}else if (semilla.image() ==  "tomaco.png"){
+			
+			semilla.enRegado(self.position())
+			
+		}else{
+			
+			semilla.enRegado(self.position())
+		}
+	}
+		
+		method cosechar(planta){
+		
+		if(planta.image() == "corn_adult.png"){
+			
+			planta.enCosecha()
+			
+		
+		}else if (planta.image() ==  "tomaco.png"){
+			
+			planta.enCosecha()
+			
+		}else if(planta.image() == "wheat_2.png" or planta.image() == "wheat_3.png"){
+			
+			planta.enCosecha()
+			
+		}else{
+			
+			 game.say(self, "No tengo nada para cosechar")
+		}
+	}
+	
+method informar(){
+	game.say(self,"tengo " + ahorros + " monedas " +  " y " + plantas.size() + " plantas para vender ")
+}		
 		
 		
 		
@@ -77,116 +131,6 @@ object hector{
 	
 	
 }
-
-object maiz{
-	var property image = "corn_baby.png"
-	
-	method enRegado(posicion){
-		if(image=="corn_baby.png"){
-			self.image("corn_adult.png")
-		}
-		
-	}
-	method enCosecha(){
-		if (self.esAdulto()){
-			hector.guardarPlantaParaVender(self)
-			game.removeVisual(self)
-			
-			
-		}
-		
-	}
-	
-	method esAdulto(){
-		return image== "corn_adult.png"
-	}
-	
-	method valorDeVenta(){
-		return 150
-	}
-	
-	
-	
-	
-	
-}
-
-object trigo{
-	var property image = "wheat_0.png"
-	var property evolucion=["wheat_0.png","wheat_1.png","wheat_2.png","wheat_3.png"]
-	var property etapaDeEvolucion=0
-	
-	method enRegado(posicion){
-		return if(etapaDeEvolucion<3){
-			image= evolucion.get(etapaDeEvolucion + 1)
-			etapaDeEvolucion+=1
-			
-		}
-		else{ etapaDeEvolucion-=3
-				image=evolucion.get(etapaDeEvolucion)
-			
-		}
-		}
-		method enCosecha(){
-			if(etapaDeEvolucion>=2){
-				hector.guardarPlantaParaVender(self)
-				game.removeVisual(self)
-			}
-			
-		}
-		
-		
-		
-		
-	
-	method valorDeVenta(){
-		return (etapaDeEvolucion - 1) * 100
-	}
-	
-}
-
-
-
-object tomaco{
-	var property image= "tomaco.png"
-	
-	method enRegado(posicion){
-		if(posicion.y()!=9){
-			game.removeVisual(self)
-		game.addVisualIn(self,self.nuevaPosicion())
-			
-		}
-		else{
-			self.irHastaElFinal(posicion)
-		}
-			}
-	method nuevaPosicion() {
-		return hector.position().up(1)
-	}
-	
-	method irHastaElFinal(posicion){
-		game.removeVisual(self)
-		game.addVisualIn(self, game.at(posicion.x(),0))
-		
-	}
-	
-	
-	method enCosecha(){
-		hector.guardarPlantaParaVender(self)
-		game.removeVisual(self)
-	}
-	
-	method valorDeLaPlanta(){
-		return 80 
-	}
-}
-
-
-
-
-
-
-
 
 
 

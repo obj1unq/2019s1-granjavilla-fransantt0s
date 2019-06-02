@@ -1,5 +1,6 @@
 import wollok.game.*
 import hector.*
+import plantas.*
 
 program Farmville{
 	//CONFIG del juego
@@ -14,11 +15,13 @@ program Farmville{
 	keyboard.down().onPressDo {hector.mover(hector.position().down(1))}
 	keyboard.left().onPressDo { hector.mover(hector.position().left(1))}
 	keyboard.right().onPressDo { hector.mover(hector.position().right(1))}
-	keyboard.m().onPressDo { hector.sembrar(maiz)}
-	keyboard.t().onPressDo { hector.sembrar(trigo)}
-	keyboard.o().onPressDo { hector.sembrar(tomaco)}
-	keyboard.c().onPressDo { hector.cosechar(game.colliders(hector))}
-	keyboard.r().onPressDo { hector.regar(game.colliders(hector))}
+	keyboard.m().onPressDo { hector.sembrar(new Maiz(position=hector.position(),image="corn_baby.png"))}
+	keyboard.t().onPressDo { hector.sembrar(new Trigo(position=hector.position(),image="wheat_0.png"))}
+	keyboard.o().onPressDo { hector.sembrar(new Tomaco(position=hector.position(),image="tomaco_baby.png"))}
+	keyboard.c().onPressDo { hector.cosecharSiHayPlantas()}
+	keyboard.r().onPressDo { hector.regarSiHayPlantas()}
+	keyboard.v().onPressDo {hector.venderPlantas()}
+	keyboard.space().onPressDo{hector.informar()}
 	
 	
 	game.start()
