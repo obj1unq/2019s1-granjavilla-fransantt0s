@@ -77,20 +77,20 @@ object hector{
 		
 		}
 		
-		method regar(semilla){
+		method regar(planta){
 		
-		if(semilla.image() == "corn_baby.png"){
+		if(planta.image() == "corn_baby.png"){
 			
-			semilla.enRegado(self.position())
+			planta.enRegado(self.position())
 			
 		
-		}else if (semilla.image() ==  "tomaco.png"){
+		}else if (planta.image() ==  "tomaco.png"){
 			
-			semilla.enRegado(self.position())
+			planta.enRegado(self.position())
 			
 		}else{
 			
-			semilla.enRegado(self.position())
+			planta.enRegado(self.position())
 		}
 	}
 		
