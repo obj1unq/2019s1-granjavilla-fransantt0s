@@ -1,6 +1,7 @@
 import wollok.game.*
 import hector.*
 import plantas.*
+import mercado.*
 
 program Farmville{
 	//CONFIG del juego
@@ -12,7 +13,9 @@ program Farmville{
 	
 	//Visuales
 	game.addVisual(hector)
-	game.addVisualIn(mercado,mercado.position().up(3).left(4))
+	game.addVisual(new Mercado(cantDeMonedas = 1000, position = game.at(4,5)))
+	game.addVisual(new Mercado(cantDeMonedas = 1000, position = game.at(8,5)))
+	game.addVisual(new Mercado(cantDeMonedas = 1000, position = game.at(1,5)))
 	
 	//Teclado
 	keyboard.up().onPressDo{ hector.mover(hector.position().up(1))}
@@ -24,7 +27,7 @@ program Farmville{
 	keyboard.o().onPressDo { hector.sembrar(new Tomaco(position=hector.position(),image="tomaco_baby.png"))}
 	keyboard.c().onPressDo { hector.cosecharSiHayPlantas()}
 	keyboard.r().onPressDo { hector.regarSiHayPlantas()}
-	keyboard.v().onPressDo {hector.venderPlantas()}
+	keyboard.v().onPressDo {hector.venderPlantasSiMercado()}
 	keyboard.space().onPressDo{hector.informar()}
 	
 	

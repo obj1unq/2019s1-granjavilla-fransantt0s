@@ -31,10 +31,13 @@ object hector{
 		return plantas.map({planta=>planta.valorDeVenta()}).sum()
 		}
 		
-		method venderPlantas(mercado){
-			if(self.colisionaConMercado() and Mercado.puedePagar()){
-			ahorros= ahorros + self.precioDeLasPlantasEnTotal()
-			plantas=[]
+		method venderPlantasSiMercado(){
+			if(self.colisionaConMercado()){
+				var mercado=game.colliders(self)
+				self.venderPlantas(mercado)
+			}
+			else{
+				game.say(self,"no es un mercado")
 			}
 		
 		
@@ -43,6 +46,25 @@ object hector{
 			
 			
 		}
+		
+		method venderPlantas(_mercado){
+			if(not plantas.isEmpty() and _mercado.puedePagar(self)){
+				plantas.forEach({planta=>self.venderA(_mercado,planta)})
+			}
+			else{
+				game.say(self,"no puedo venderte")
+			}
+		}
+		
+		method venderA(mercado,planta){
+			mercado.comprar(planta)
+			ahorros= ahorros + planta.valorDeVenta()
+			plantas.remove(planta)
+			
+			
+		}
+		
+		
 		
 		method colisionaConMercado(){
 			return game.colliders(self).all({cosa=>not cosa.esUnaPlanta()})
